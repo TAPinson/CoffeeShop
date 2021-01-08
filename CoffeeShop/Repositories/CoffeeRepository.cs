@@ -48,5 +48,34 @@ namespace CoffeeShop.Repositories
                 }
             }
         }
+
+        public Coffee GetCoffeeById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, Title, BeanVarietyId FROM Coffee WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    var reader = cmd.ExecuteReader();
+
+                    Coffee coffee = null;
+                    if(reader.Read())
+                    {
+                        coffee = new Coffee()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            BeanVarietyId = reader.GetInt32(reader.GetOrdinal("BeanVarietyId"))
+                        };
+                    }
+                    reader.Close();
+                    return coffee;
+
+                }
+            }
+        }
     }
 }

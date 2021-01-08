@@ -34,9 +34,9 @@ namespace CoffeeShop.Controllers
 
         // GET api/<CoffeeController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(_coffeeRepository.GetCoffeeById(id));
         }
 
         // POST api/<CoffeeController>
